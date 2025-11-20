@@ -1,0 +1,20 @@
+.enlace-animado {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 3px;
+}
+
+.enlace-animado::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: green;
+    transition: width .4s ease;
+}
+
+.enlace-animado:hover::after{
+    width: 100%;
+}

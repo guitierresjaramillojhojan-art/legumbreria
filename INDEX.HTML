@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Legumbre La Marcela</title>
+    <link rel="stylesheet" href="estilos.css">
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<nav>
+    
+
+    <ul id="menu">
+        <li><a href="INDEX.HTML">Inicio</a></li>
+        <li><a href="INDEX-NOSOTROS.html">Sobre Nosotros</a></li>
+        <li><a href="https://maps.app.goo.gl/Y3fKTg9k6iwjGxV48">Ubicación</a></li>
+        <li><a href="https://wa.me/573001234567">Contacto</a></li>
+        <li><a href="REGIS.INICIA.html">Registrarse</a></li>
+        <li><a href="REGIS.INICIA.html">Iniciar sesión</a></li>
+    </ul>
+</nav>
+
+<h1>🍎 BIENVENIDOS A NUESTRA LEGUMBRE LA MARCELA 🍎</h1>
+
+<div class="menu-productos">
+    <li class="producto-menu">
+        <span onclick="toggleProductos()">Productos ▼</span>
+        <ul id="submenu-productos">
+            <li><a href="#legumbres">Legumbres</a></li>
+            <li><a href="#mecatos">Mecatos</a></li>
+            <li><a href="#personales">Productos Personales</a></li>
+            <li><a href="#aseo">Productos de Aseo</a></li>
+            <li><a href="#Tienda">Productos de Tienda</a></li>
+        </ul>
+    </li>
+</div>
+
+<div class="carrito-container">
+    <div class="carrito-info" id="carritoBtn">
+        🛒 Carrito: <span id="contador">0</span>
+    </div>
+
+    <div class="carrito-desplegable" id="carritoDesplegable">
+        <h4>Tu carrito</h4>
+        <ul id="lista-carrito" style="padding-left:15px; margin:0;"></ul>
+        <div class="total-carrito-box">Total: $<span id="total">0</span></div>
+        <button class="btn-carrito" onclick="comprar()">Comprar</button>
+    </div>
+</div>
+
+<div class="buscador-wrap">
+    <input type="text" id="buscador" placeholder="Buscar producto..." onkeyup="buscarProducto()">
+</div>
+
+<div class="contenedor-categorias">
+ 
+            <div id="legumbre"><div class="categoria">legumbre</div><div class="grid-productos"><div class="card-producto"><img src="https://media.istockphoto.com/id/157430678/es/foto/tres-de-papas.jpg?s=612x612&w=0&k=20&c=Tasc5CqTXRdkiAHZNI2XSZfesh_ovnjgbes1QuoRscs=" alt="Papa"><div class="info-producto"><h3>Papa</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Papa')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3VDiN-RPJk-nnQVFHg2B8AGsPbkmpaY0NuA&s" alt="Zanahoria"><div class="info-producto"><h3>Zanahoria</h3><p></p><div class="precio">$4,500</div><button class="btn-carrito" onclick="agregarCarrito(4500,'Zanahoria')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://mistiendas.com.co/110-large_default/cebolla-huevo-roja-kilo.jpg" alt="Cebolla huevo morada"><div class="info-producto"><h3>Cebolla huevo morada</h3><p></p><div class="precio">$4,500</div><button class="btn-carrito" onclick="agregarCarrito(4500,'Cebolla huevo morada')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjs-1XZXW4sa_iDZSjL_l4UYkT2naDmgiQSw&s" alt="Cebolla huevo blanca"><div class="info-producto"><h3>Cebolla huevo blanca</h3><p></p><div class="precio">$4,500</div><button class="btn-carrito" onclick="agregarCarrito(4500,'Cebolla huevo blanca')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Zki4qH1EEJvhMtgolWcXmI5VCFS-PYhXfw&s" alt="Cebolla rama"><div class="info-producto"><h3>Cebolla rama</h3><p></p><div class="precio">$4,000</div><button class="btn-carrito" onclick="agregarCarrito(4000,'Cebolla rama')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcQxikj3GrdCDgIRhFMSRMD80yx1yLWT2W1A&s" alt="Tomate"><div class="info-producto"><h3>Tomate</h3><p></p><div class="precio">$4,000</div><button class="btn-carrito" onclick="agregarCarrito(4000,'Tomate')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://media.istockphoto.com/id/1168999569/es/foto/cabeza-de-repollo-blanco-fresco-recortado-en-blanco.jpg?s=612x612&w=0&k=20&c=v-F5YgKCyCvBWLzeZ5KvFZZwXYxDstbZGWs3vt2bO2A=" alt="Repollo"><div class="info-producto"><h3>Repollo</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Repollo')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlYb1mf6uCdgch-qPXpbBHfrxMLnHkarcP5g&s" alt="Lechuga"><div class="info-producto"><h3>Lechuga</h3><p></p><div class="precio">$3,500</div><button class="btn-carrito" onclick="agregarCarrito(3500,'Lechuga')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGBYmh7IgObL_Q2xdFNQAQDuZ4PtUm2sZmww&s" alt="Maduros"><div class="info-producto"><h3>Maduros</h3><p></p><div class="precio">$3,500</div><button class="btn-carrito" onclick="agregarCarrito(3500,'Maduros')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIC0Hl_9gQkdpFotF_Kaqg6bmMawmWkiO-bA&s" alt="Verdes"><div class="info-producto"><h3>Verdes</h3><p></p><div class="precio">$6,500</div><button class="btn-carrito" onclick="agregarCarrito(6500,'Verdes')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR71FoxqSPgz89fKfwkX4HgZG59LBJxUSvMA&s" alt="Frijol verde"><div class="info-producto"><h3>Frijol verde</h3><p></p><div class="precio">$3,600</div><button class="btn-carrito" onclick="agregarCarrito(3600,'Frijol verde')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://thumbs.dreamstime.com/b/manojo-de-pl%C3%A1tanos-aislados-en-el-fondo-blanco-icono-del-pl%C3%A1tano-90861352.jpg" alt="Guineos"><div class="info-producto"><h3>Guineos</h3><p></p><div class="precio">$6,500</div><button class="btn-carrito" onclick="agregarCarrito(6500,'Guineos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://www.shutterstock.com/image-photo/cultivation-potato-creole-over-white-260nw-1030229530.jpg" alt="Papa criolla"><div class="info-producto"><h3>Papa criolla</h3><p></p><div class="precio">$6,500</div><button class="btn-carrito" onclick="agregarCarrito(6500,'Papa criolla')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvnBzWr9DxbHKqjSMZpHWJ_L1p6cemvQZypw&s" alt="Cilantro"><div class="info-producto"><h3>Cilantro</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Cilantro')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVUeckrwMnffW28nkt68eYaKSBIwfwa7gWvQ&s" alt="Ahuyama"><div class="info-producto"><h3>Ahuyama</h3><p></p><div class="precio">$4,000</div><button class="btn-carrito" onclick="agregarCarrito(4000,'Ahuyama')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://png.pngtree.com/png-vector/20240315/ourmid/pngtree-tamarillo-fruits-snack-tree-food-png-image_11852898.png" alt="Tomate árbol"><div class="info-producto"><h3>Tomate árbol</h3><p></p><div class="precio">$4,500</div><button class="btn-carrito" onclick="agregarCarrito(4500,'Tomate árbol')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbVSG88z099YeT7F9uvKqIYZrbFoHGdiNhZxflA5hU49CpPdGmNw07HdmI6q8zSSLC4yA&usqp=CAU" alt="Guayaba"><div class="info-producto"><h3>Guayaba</h3><p></p><div class="precio">$6,000</div><button class="btn-carrito" onclick="agregarCarrito(6000,'Guayaba')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://png.pngtree.com/thumb_back/fh260/background/20220726/pngtree-exotic-tropical-fruit-called-lulo-solanum-quitoense-food-ripe-fruit-photo-image_22515770.jpg" alt="Lulo"><div class="info-producto"><h3>Lulo</h3><p></p><div class="precio">$5,000</div><button class="btn-carrito" onclick="agregarCarrito(5000,'Lulo')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7PgK1EiMW8Fnf9YxLbVCTdmWgreFJORAkqw&s" alt="Piña"><div class="info-producto"><h3>Piña</h3><p></p><div class="precio">$5,000</div><button class="btn-carrito" onclick="agregarCarrito(5000,'Piña')">Agregar al carrito</button></div></div>
+
+        </div>
+    </div>
+
+    <div id="Tienda">
+        <div class="categoria">Tienda</div>
+        <div class="grid-productos">
+
+            <div class="card-producto"><img src="https://www.comercializadoradelcampo.com/tiendaonline/imagenes/producto_1591193274.png" alt="Arroz Orquidea "><div class="info-producto"><h3>Arroz Orquidea X G</h3><p></p><div class="precio">$2,300</div><button class="btn-carrito" onclick="agregarCarrito(2300, 'Arroz')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTltDROjlhCBNxt0iYaoodcWlhit1wN3W7aoQ&s" alt="Panela"><div class="info-producto"><h3>Panela G</h3><p></p><div class="precio">$5,500</div><button class="btn-carrito" onclick="agregarCarrito(5500,'Panela')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRES92QZ1O4MzXGFn-bFo6Jw33iDBi2r5sfrQ&s" alt="Frijol lima"><div class="info-producto"><h3>Frijol lima X G</h3><p></p><div class="precio">$5,000</div><button class="btn-carrito" onclick="agregarCarrito(5000,'Frijol lima')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9i5VP87ll8rjoNmJrvxN160gKDYEXjUTzZw&s" alt="Frijol cargamanto"><div class="info-producto"><h3>Frijol cargamanto X G</h3><p></p><div class="precio">$6,000</div><button class="btn-carrito" onclick="agregarCarrito(6000,'Frijol cargamanto')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu5R2mk5fM1ohuUQ2XLeYibiIvHzYx4T8DVQ&s" alt="Lentejas"><div class="info-producto"><h3>Lentejas X G</h3><p></p><div class="precio">$4,000</div><button class="btn-carrito" onclick="agregarCarrito(4000,'Lentejas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://http2.mlstatic.com/D_NQ_NP_842357-MCO73761549721_012024-O.webp" alt="Pastas"><div class="info-producto"><h3>Pastas X G</h3><p></p><div class="precio">$1,500</div><button class="btn-carrito" onclick="agregarCarrito(1500,'Pastas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://cloudfront-us-east-1.images.arcpublishing.com/semana/S2D375X56RACRF2OAYJL2GQ3JI.jpg" alt="Espaguetis"><div class="info-producto"><h3>Espaguetis X G</h3><p></p><div class="precio">$1,500</div><button class="btn-carrito" onclick="agregarCarrito(1500,'Espaguetis')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTporpC13kUVghWG4pQncewJJLngiAGu1Eweg&s" alt="Azúcar"><div class="info-producto"><h3>Azúcar X G</h3><p></p><div class="precio">$2,100</div><button class="btn-carrito" onclick="agregarCarrito(2100,'Azúcar')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCXskkVV9Ene7AalGJ2EGKh-433DEGBD0o6Q&s" alt="Sal"><div class="info-producto"><h3>Sal X G</h3><p></p><div class="precio">$1,000</div><button class="btn-carrito" onclick="agregarCarrito(400,'Sal')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://static.compreloadomicilio.com/autoserviciolaamistad/products/01568/609349bbd30b2115101436.webp" alt="Café"><div class="info-producto"><h3>Café x G</h3><p></p><div class="precio">$400</div><button class="btn-carrito" onclick="agregarCarrito(3500,'Café')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://empaquetadoseltrece.com/wp-content/uploads/2025/07/Garbanzo-460-El-Trece-.png" alt="Garbanzos"><div class="info-producto"><h3>Garbanzos X G</h3><p></p><div class="precio">$3,500</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Garbanzos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://empaquetadoseltrece.com/wp-content/uploads/2025/07/Arveja-460-El-Trece-.png" alt="Arvejas"><div class="info-producto"><h3>Arvejas X G</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3500,'Arvejas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://vaquitaexpress.com.co/media/catalog/product/cache/e89ece728e3939ca368b457071d3c0be/7/7/7707231960273_33.jpg" alt="Blanquillos"><div class="info-producto"><h3>Blanquillos X G</h3><p></p><div class="precio">$3,500</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Blanquillos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="data:image/jpeg;base64,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" alt="Crema de leche"><div class="info-producto"><h3>Crema de leche</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Crema de leche')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUSaN0hy0Rm6WAzjox1T4QFOVPfPKhoRsyGg&s" alt="Tostadas"><div class="info-producto"><h3>Tostadas</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Tostadas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://www.papyser.com/catalogo/S-2903.jpg" alt="Galletas"><div class="info-producto"><h3>Galletas X U</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(1300,'Galletas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://cdn1.totalcommerce.cloud/mercadozapatoca/product-image/es/pan-calentano-pequeno-1.webp" alt="Pan"><div class="info-producto"><h3>Pan X U</h3><p></p><div class="precio">$1,300</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Pan')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuYy9oVLaHtjwCgr_FtVcvGHhus5_II0nh0Q&s" alt="Mantequilla"><div class="info-producto"><h3>Mantequilla X U</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(1300,'Mantequilla')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://villavoexpress.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NDI1MywicHVyIjoiYmxvYl9pZCJ9fQ==--59f0af1368d7d1139f6eb7222ba1893f8b6da284/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fZml0IjpbODAwLDgwMF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--1420d7fd3d20057726f0ef3c0043db24ca0403be/chocolisto-en-tarro.jpg?locale=es" alt="Chocolate"><div class="info-producto"><h3>Chocolate</h3><p></p><div class="precio">$1,300</div><button class="btn-carrito" onclick="agregarCarrito(700,'Chocolate')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9kWBibiwxwcSjf5fxUPIcGL-H1hD0PNIsPg&s" alt="Huevos"><div class="info-producto"><h3>Huevos</h3><p></p><div class="precio">$4,000</div><button class="btn-carrito" onclick="agregarCarrito(4000,'Huevos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://www.ruufe.com/cdn/shop/files/supermercados_la_vaquita_supervaquita_harina_dona_arepa_1000gr_blanca_harinas.jpg?v=1728251455" alt="Arepa harina"><div class="info-producto"><h3>Arepa harina doña arepa</h3><p></p><div class="precio">$4,000</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Arepa harina')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://villavoexpress.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MzkwNiwicHVyIjoiYmxvYl9pZCJ9fQ==--f8f8d53986739752ab1ae24f4fa74aa0ce3674db/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fZml0IjpbNjAwLDYwMF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--121ebfcd4293f99df590ac1a60ec2d53d6f75b42/harina-de-trigo-la-nieve-500gr.jpg?locale=es" alt="Harina trigo"><div class="info-producto"><h3>Harina trigo</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2300,'Harina trigo')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://stockimages.tiendasd1.com/stockimages.tiendasd1.com/kobastockimages/IMAGENES/12004359/aceite-vegetal-imata-3.000-ml-01.png" alt="Aceite grande"><div class="info-producto"><h3>Aceite grande X ML500</h3><p></p><div class="precio">$23,000</div><button class="btn-carrito" onclick="agregarCarrito(23000,'Aceite grande')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://http2.mlstatic.com/D_NQ_NP_963445-MCO68834350718_042023-O.webp" alt="Aceite pequeño"><div class="info-producto"><h3>Aceite pequeño X 200ML</h3><p></p><div class="precio">$7,500</div><button class="btn-carrito" onclick="agregarCarrito(7500,'Aceite pequeño')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkssHAzXXeAAuA47EgW9Kaji1q2QSYBMO9Iw&s" alt="Condimentos"><div class="info-producto"><h3>Condimentos X G</h3><p></p><div class="precio">$500</div><button class="btn-carrito" onclick="agregarCarrito(7500,'Condimentos')">Agregar al carrito</button></div></div>
+
+        </div>
+    </div>
+
+
+    <div id="personales">
+        <div class="categoria">Productos Personales</div>
+        <div class="grid-productos">
+
+             <div class="card-producto"><img src="https://thumbs.dreamstime.com/b/colgar-pasta-de-dientes-en-fondo-blanco-acci%C3%B3n-total-y-triple-dental-colgador-184839493.jpg" alt="Colgate"><div class="info-producto"><h3>Colgate</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(4500,'Colgate')">Agregar al carrito</button></div></div>
+
+             <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZiBMq-Zlr0HHIVD00r4UAD6Fml1kfsxswgA&s" alt="Protectores nosotras"><div class="info-producto"><h3>Protectores nosotras</h3><p></p><div class="precio">$1,500</div><button class="btn-carrito" onclick="agregarCarrito(1500,'Protectores')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6W8Vsr-QvfSdqeTBwo_ipuixMxIJUctJZ0Q&s" alt="Desodorante hombre"><div class="info-producto"><h3>Desodorante hombre</h3><p></p><div class="precio">$1,500</div><button class="btn-carrito" onclick="agregarCarrito(1500,'Desodorante hombre')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEsM2T4h93yyqNNnuzkcgp7BfBAANj1S3WFg&s" alt="Desodorante mujer"><div class="info-producto"><h3>Desodorante mujer</h3><p></p><div class="precio">$1,200</div><button class="btn-carrito" onclick="agregarCarrito(1200,'Desodorante mujer')">Agregar al carrito</button></div></div>
+     
+            <div class="card-producto"><img src="https://mercasur.com.co/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjQ3NzczOCwicHVyIjoiYmxvYl9pZCJ9fQ==--2378a7706074bd3617258eabe90e95a93702f614/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZml0IjpbODAwLDgwMF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--cef66509c9cdc75663c0eefd9421db1d2ea4fead/7702027041662_1_Toallas-Higienicas-Nosotras-Natural-Invisible-Con-Alas-X-10Und.png?locale=es" alt="Toallas higienicas"><div class="info-producto"><h3>Toallas higienicas</h3><p></p><div class="precio">$3,000 / $2,500</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Toallas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiWInC_UFhFdcK8bBXjSGi9r-OU8OXhXdW3Q&s" alt="Papel higiénico"><div class="info-producto"><h3>Papel higiénico</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Papel higiénico')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://stockimages.tiendasd1.com/stockimages.tiendasd1.com/kobastockimages/IMAGENES/12006981/shampoo-control-caida-xen-aseo-hogar-12006981-01.png" alt="Champú"><div class="info-producto"><h3>Champoo xen</h3><p></p><div class="precio">$1,200</div><button class="btn-carrito" onclick="agregarCarrito(1200,'Champú')">Agregar al carrito</button></div></div>
+
+             <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiuUKjitSXuqVGrRyhgXM6Grb35rQN1v5TGg&s" alt="Acondicionador"><div class="info-producto"><h3>Acondicionador</h3><p></p><div class="precio">$1,200</div><button class="btn-carrito" onclick="agregarCarrito(1200,'Acondicionador')">Agregar al carrito</button></div></div>
+
+            </div>
+    </div>
+
+    <div id="aseo">
+        <div class="categoria">Aseo</div>
+        <div class="grid-productos">
+
+            <div class="card-producto"><img src="https://supertiendascomunal.com/3847-large_default/detergente-fab-2-kg.jpg" alt="Fab"><div class="info-producto"><h3>Fab X 900C.NETO </h3><p></p><div class="precio">$5,500</div><button class="btn-carrito" onclick="agregarCarrito(5500,'Fab')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="data:image/jpeg;base64,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" alt="Jabón rey"><div class="info-producto"><h3>Jabón rey X 300G</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Jabón rey')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://www.papyser.com/catalogo/0520035.jpg" alt="Jabón de baño"><div class="info-producto"><h3>Jabón de baño X 115G</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Jabón de baño')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU2964O61enFYJDwUaCy-2DSuI2FqTjJSlmA&s" alt="Jabón de trastes"><div class="info-producto"><h3>Jabón de trastes</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Jabón de trastes')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyj_DnQaToPgQXBG5kqoNQPpIABuWRzEg43w&s" alt="Esponjas"><div class="info-producto"><h3>Esponjas</h3><p></p><div class="precio">$400</div><button class="btn-carrito" onclick="agregarCarrito(400,'Esponjas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://proquimindustrial.com/cdn/shop/products/Esponja-de-brillo.jpg?v=1620228047" alt="Esponja brillo"><div class="info-producto"><h3>Esponja brillo</h3><p></p><div class="precio">$900</div><button class="btn-carrito" onclick="agregarCarrito(900,'Esponja brillo')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP5RxEw6LIhCjfNZZNwyREfSEUN5F--SP8ow&s" alt="Papel aluminio"><div class="info-producto"><h3>Papel aluminio</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Papel aluminio')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://pxmshare.colgatepalmolive.com/JPEG_1500/wYHgTYfXMue008sVH5nhZ.jpg" alt="Cepillo dientes"><div class="info-producto"><h3>Cepillo dientes</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Cepillo dientes')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1UdB4YLPzUZWUY1a97Ir3Q-9ertcO76-zmw&s" alt="Vasos desechables"><div class="info-producto"><h3>Vasos desechables</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Vasos desechables')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://unibol.com.co/Pictures/x-large/Product/25/25-01.jpg" alt="Servilletas"><div class="info-producto"><h3>Servilletas</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Servilletas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdf71G33qWYY3ISTCL3QwkC3C9XAGbNWN3iw&s" alt="Palos paletas"><div class="info-producto"><h3>Palos paletas</h3><p></p><div class="precio">$3,000</div><button class="btn-carrito" onclick="agregarCarrito(3000,'Palos paletas')">Agregar al carrito</button></div></div>
+
+        </div>
+    </div>
+
+    <div id="mecatos">
+        <div class="categoria">Mecatos</div>
+
+        <div class="grid-productos">
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm3YmrUuafYDTfBi9n0CzOugI02G5tMZ81fA&s" alt="DeToditos"><div class="info-producto"><h3>DeToditos (Limón, Natural, Picante, Mix, BBQ)</h3><p></p><div class="precio">$2,800</div><button class="btn-carrito" onclick="agregarCarrito(2800,'DeToditos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://marcallanera.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NDExNzcxLCJwdXIiOiJibG9iX2lkIn19--f08910f560e8d3520e0916e8153434a4fb6d9b9e/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJQTkciLCJyZXNpemVfdG9fZml0IjpbODAwLDgwMF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--5bc749b878ff7aeaa8c5e47bd558bf4c834c3584/wreytj.PNG?locale=es" alt="Papitas"><div class="info-producto"><h3>Papitas (Limón, Natural, Pollo, BBQ)</h3><p></p><div class="precio">$2,300</div><button class="btn-carrito" onclick="agregarCarrito(2300,'Papitas')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://static.compreloadomicilio.com/tiendacuco/products/01155/6464e88680cd1490810849.webp" alt="Choclitos"><div class="info-producto"><h3>Choclitos</h3><p></p><div class="precio">$1,800</div><button class="btn-carrito" onclick="agregarCarrito(1800,'Choclitos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://d320eox725dcq1.cloudfront.net/upload/1918/attachments/product/file_69f0658f-42fa-4d7f-ae29-1d7e3567c3c2.webp" alt="Mamut"><div class="info-producto"><h3>Mamut</h3><p></p><div class="precio">$400</div><button class="btn-carrito" onclick="agregarCarrito(400,'Mamut')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://cdn1.totalcommerce.cloud/mercadozapatoca/product-image/es/galletas-chispas-chokis-x6u-x37g-1.webp" alt="Chokis"><div class="info-producto"><h3>Galletas Chokis</h3><p></p><div class="precio">$1,700</div><button class="btn-carrito" onclick="agregarCarrito(1700,'Chokis')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://mercasur.com.co/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODI0MzA2LCJwdXIiOiJibG9iX2lkIn19--6c95bcadd42ffadce691835250db2171b716fdb3/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fZml0IjpbODAwLDgwMF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--1420d7fd3d20057726f0ef3c0043db24ca0403be/7702189045751.jpg?locale=es" alt="natuchips maduros"><div class="info-producto"><h3>natuchips maduros</h3><p></p><div class="precio">$2,200</div><button class="btn-carrito" onclick="agregarCarrito(2200,'natochips maduros')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://laprincipaldelicores.com/cdn/shop/files/snack_natuchips_platano_maduro.png?v=1719339111&width=1000" alt="natuchips platano"><div class="info-producto"><h3>natuchips platano</h3><p></p><div class="precio">$2,200</div><button class="btn-carrito" onclick="agregarCarrito(2200,'natuchips platano')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqeoOUWZhBOJOPvx8WB-cl2-ZjPx6q9EFxdw&s" alt="Cheesetris"><div class="info-producto"><h3>Cheesetris</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Cheesetris')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOl2ejK0IQkOMAWoJmADR0FxY068tRGwibpQ&s" alt="Doritos"><div class="info-producto"><h3>Doritos</h3><p></p><div class="precio">$2,500</div><button class="btn-carrito" onclick="agregarCarrito(2500,'Doritos')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRdpNVoWTwDKYwiaPwkUKGiYToNEuGyTmLmg&s" alt="Bombon grande"><div class="info-producto"><h3>Bombón grande</h3><p></p><div class="precio">$500</div><button class="btn-carrito" onclick="agregarCarrito(500,'Bombón grande')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://mistiendas.com.co/4235-large_default/bombon-supercoco.jpg" alt="Bombon pequeño"><div class="info-producto"><h3>Bombón pequeño</h3><p></p><div class="precio">$200</div><button class="btn-carrito" onclick="agregarCarrito(200,'Bombón pequeño')">Agregar al carrito</button></div></div>
+
+            <div class="card-producto"><img src="https://media.istockphoto.com/id/675981154/es/foto/mont%C3%B3n-de-caramelos-de-colores-aislado-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=ghAj3rePKVPCluCUxzoi0kyxHnGoQZCoAXxpc634vqc=" alt="Confites"><div class="info-producto"><h3>Confites</h3><p></p><div class="precio">$200/100</div><button class="btn-carrito" onclick="agregarCarrito(200,'Confites')">Agregar al carrito</button></div></div>
+
+        </div>
+    </div>
+</div> 
+
+
+<script>
+
+function limpiarCarrito() {
+    for (const nombre in carrito) {
+        if (!nombre || nombre === "undefined" || nombre.trim() === "") {
+            delete carrito[nombre];
+        }
+    }
+    localStorage.setItem("carrito_lista", JSON.stringify(carrito));
+}
+
+
+
+let carrito = JSON.parse(localStorage.getItem("carrito_lista") || "{}");
+let total = Number(localStorage.getItem("carrito_total") || 0);
+
+
+function guardarCarrito() {
+    localStorage.setItem("carrito_lista", JSON.stringify(carrito));
+
+    let nuevoTotal = 0;
+    for (const key in carrito) {
+        nuevoTotal += carrito[key].precio * carrito[key].cantidad;
+    }
+    localStorage.setItem("carrito_total", nuevoTotal);
+}
+
+
+function agregarCarrito(precio, nombre) {
+    if (!carrito[nombre]) {
+        carrito[nombre] = {
+            precio: precio,
+            cantidad: 1
+        };
+    } else {
+        carrito[nombre].cantidad++;
+    }
+
+    guardarCarrito();
+    mostrarCarrito();
+}
+
+
+function mostrarCarrito() {
+    const lista = document.getElementById("lista-carrito");
+    const contador = document.getElementById("contador");
+    const totalBox = document.getElementById("total");
+
+    lista.innerHTML = "";
+    let cant = 0;
+    let suma = 0;
+
+    for (const nombre in carrito) {
+        const item = carrito[nombre];
+        cant += item.cantidad;
+        suma += item.precio * item.cantidad;
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${nombre} x ${item.cantidad} — $${item.precio}
+        `;
+        lista.appendChild(li);
+    }
+
+    contador.innerText = cant;
+    totalBox.innerText = suma.toLocaleString("es-CO");
+}
+
+function comprar() {
+    if (Object.keys(carrito).length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+    }
+    window.location.href = "compra-productos.html";
+}
+
+
+document.getElementById("carritoBtn").onclick = function() {
+    document.getElementById("carritoDesplegable").style.display =
+        document.getElementById("carritoDesplegable").style.display === "block"
+        ? "none" : "block";
+};
+
+
+mostrarCarrito();
+
+
+
+function cambiarCantidad(nombre, cambio) {
+
+    if (!carrito[nombre]) return;
+
+    carrito[nombre].cantidad += cambio;
+
+    if (carrito[nombre].cantidad <= 0) {
+        delete carrito[nombre];
+    }
+
+    actualizarCarrito();
+}
+
+
+function actualizarCarrito() {
+
+    limpiarCarrito();
+
+    let lista = document.getElementById("lista-carrito");
+    let totalSpan = document.getElementById("total");
+    let contador = document.getElementById("contador");
+
+    lista.innerHTML = "";
+    let total = 0;
+
+    let keys = Object.keys(carrito);
+
+    keys.forEach(nombre => {
+        const item = carrito[nombre];
+        total += item.precio * item.cantidad;
+
+        const li = document.createElement("li");
+        li.style.marginBottom = "10px";
+
+        li.innerHTML = `
+            <strong>${nombre}</strong><br>
+            Cantidad: ${item.cantidad}<br>
+
+            <button onclick="cambiarCantidad('${nombre}', -1)">➖</button>
+            <button onclick="cambiarCantidad('${nombre}', 1)">➕</button>
+
+            <br><small>$${item.precio.toLocaleString("es-CO")}</small>
+            <hr>
+        `;
+
+        lista.appendChild(li);
+    });
+
+    totalSpan.innerText = total.toLocaleString("es-CO");
+    contador.innerText = keys.length;
+
+    localStorage.setItem("carrito_lista", JSON.stringify(carrito));
+}
+
+
+document.getElementById("carritoBtn").onclick = function () {
+    let c = document.getElementById("carritoDesplegable");
+    c.style.display = c.style.display === "block" ? "none" : "block";
+};
+
+
+function buscarProducto() {
+    let texto = document.getElementById("buscador").value.toLowerCase();
+    let productos = document.querySelectorAll(".card-producto");
+
+    productos.forEach(p => {
+        let nombre = p.querySelector("h3").innerText.toLowerCase();
+        p.style.display = nombre.includes(texto) ? "block" : "none";
+    });
+}
+
+
+
+function toggleProductos(){
+    document.getElementById("submenu-productos").classList.toggle("mostrar");
+}
+
+
+
+function comprar() {
+    window.location.href = "compra-productos.html";
+}
+
+
+
+actualizarCarrito();
+
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const supabase = window.supabase.createClient(
+    "https://axuhliyyagummxkehdup.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4dWhsaXl5YWd1bW14a2VoZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDI2MjIsImV4cCI6MjA3ODUxODYyMn0.Ae86N7rDL9MTCD0z6fECa_H6nof5HrTORiY0wHsz_Hk"
+  );
+</script>
+
+
+</body>
+</html>

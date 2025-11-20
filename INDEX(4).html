@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Confirmar Pedido — Legumbre La Marcela</title>
+  <link rel="stylesheet" href="estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<nav>
+  <div class="menu-btn" id="btn">&#9776;</div>
+  <ul id="menu">
+    <li><a href="INDEX(2).html">Registrarse</a></li>
+    <li><a href="INDEX(2).html">Iniciar sesión</a></li>
+    <li><a href="INDEX.HTML">Inicio</a></li>
+    <li><a href="INDEX(3).html">Sobre Nosotros</a></li>
+  </ul>
+</nav>
+
+<h1>Confirmar pedido — Legumbre La Marcela</h1>
+
+<div class="compra-contenedor">
+  <div class="fila">
+    <div class="panel" id="panel-carrito">
+      <h3>Productos en tu pedido</h3>
+      <div id="productos-lista"></div>
+      <div style="margin-top:12px; font-weight:700">Total: $<span id="mostrar-total">0</span></div>
+    </div>
+
+    <div class="panel">
+      <h3>Datos de envío</h3>
+
+      <label>Nombre a quien irá el pedido</label>
+      <input type="text" id="nombre-usuario" readonly>
+
+      <label>Dirección de entrega</label>
+      <textarea id="direccion" rows="3" placeholder="Escribe la dirección completa (barrio, calle, número, referencia)"></textarea>
+
+      <label>Observaciones (opcional)</label>
+      <textarea id="observaciones" rows="2" placeholder="Ej: tocar timbre, dejar con vecino, etc."></textarea>
+
+      <div style="margin-top:12px;">
+        <button class="btn" id="enviarPedido">Enviar pedido</button>
+        <button class="btn" id="volver" style="background:#444; margin-left:8px;">Volver</button>
+      </div>
+
+      <div id="estado" class="mensaje" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const supabase = window.supabase.createClient(
+    "https://axuhliyyagummxkehdup.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4dWhsaXl5YWd1bW14a2VoZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDI2MjIsImV4cCI6MjA3ODUxODYyMn0.Ae86N7rDL9MTCD0z6fECa_H6nof5HrTORiY0wHsz_Hk"
+  );
+
+  const usuarioLocal = (() => {
+    const a = localStorage.getItem('usuario');
+    if (a) return JSON.parse(a);
+    const b = localStorage.getItem('usuario_actual');
+    if (b) return JSON.parse(b);
+    return null;
+  })();
+
+  const carritoLista = JSON.parse(localStorage.getItem('carrito_lista') || '{}');
+  const carritoTotal = Number(localStorage.getItem('carrito_total') || 0);
+
+  const nombreInput = document.getElementById('nombre-usuario');
+  if (usuarioLocal && usuarioLocal.nombre) {
+    nombreInput.value = usuarioLocal.nombre;
+  } else {
+    nombreInput.value = ""; 
+  }
+
+  const cont = document.getElementById('productos-lista');
+  const mostrarTotal = document.getElementById('mostrar-total');
+ let total = 0;
+for (const nombre in carritoLista) {
+  total += carritoLista[nombre].precio * carritoLista[nombre].cantidad;
+}
+mostrarTotal.innerText = total.toLocaleString('es-CO');
+
+
+  if (Object.keys(carritoLista).length === 0) {
+    cont.innerHTML = '<p>No hay productos en el carrito. Vuelve a la página de productos.</p>';
+  } else {
+    for (const nombre in carritoLista) {
+
+  const item = carritoLista[nombre]; 
+
+  const div = document.createElement('div');
+  div.className = 'producto-linea';
+
+  div.innerHTML = `
+    <div>
+      <strong>${nombre}</strong><br>
+      Cantidad: ${item.cantidad}
+    </div>
+
+    <div>
+      <button onclick="cambiarCantidadCompra('${nombre}', -1)">➖</button>
+      <button onclick="cambiarCantidadCompra('${nombre}', 1)">➕</button>
+    </div>
+  `;
+
+  cont.appendChild(div);
+}
+
+  }
+
+  document.getElementById('volver').addEventListener('click', () => {
+    window.location.href = 'INDEX.HTML';
+  });
+
+  const estado = document.getElementById('estado');
+  const btnEnviar = document.getElementById('enviarPedido');
+
+  btnEnviar.addEventListener('click', async () => {
+    estado.style.display = 'none';
+    if (!usuarioLocal) {
+      showEstado('Debes iniciar sesión antes de enviar el pedido.', 'error');
+      return;
+    }
+    const direccion = document.getElementById('direccion').value.trim();
+    if (!direccion) {
+      showEstado('Debes ingresar la dirección de entrega.', 'error');
+      return;
+    }
+    if (Object.keys(carritoLista).length === 0) {
+      showEstado('Tu carrito está vacío.', 'error');
+      return;
+    }
+
+    btnEnviar.disabled = true;
+    btnEnviar.textContent = 'Enviando...';
+
+    try {
+
+      const { data: pedidoData, error: pedidoError } = await supabase
+        .from('pedidos')
+        .insert([{
+          usuario_id: usuarioLocal.id ?? usuarioLocal.user_id ?? null,
+          total: carritoTotal,
+          direccion: direccion,
+          observaciones: document.getElementById('observaciones').value.trim(),
+          estado: 'pendiente',
+          creado_en: new Date().toISOString()
+        }])
+        .select()
+        .single();
+
+      if (pedidoError) throw pedidoError;
+      if (!pedidoData || !pedidoData.id) throw new Error('No se creó el pedido.');
+
+      const pedidoId = pedidoData.id;
+
+      const detalles = [];
+for (const nombre in carritoLista) {
+
+  const item = carritoLista[nombre];  // ← aquí está el objeto correcto
+  const cantidad = item.cantidad;     // ← aquí sí saca el número
+  const precio = item.precio;
+
+  const { data: prod } = await supabase
+    .from('productos')
+    .select('id, precio')
+    .eq('nombre', nombre)
+    .maybeSingle();
+
+  detalles.push({
+    pedido_id: pedidoId,
+    producto_id: prod?.id ?? null,
+    nombre_producto: nombre,
+    cantidad: cantidad,
+    precio_unitario: precio
+  });
+}
+
+
+      const { error: detallesError } = await supabase
+        .from('detalle_pedido')
+        .insert(detalles);
+
+      if (detallesError) throw detallesError;
+
+      showEstado('Pedido enviado con éxito. Te contactaremos para confirmar. ✔️', 'success');
+
+      localStorage.removeItem('carrito_lista');
+      localStorage.removeItem('carrito_total');
+      localStorage.removeItem('lista'); 
+      setTimeout(() => {
+        window.location.href = 'INDEX.HTML';
+      }, 2500);
+
+    } catch (err) {
+      console.error(err);
+      const msg = err?.message || JSON.stringify(err);
+      showEstado('Error al enviar el pedido: ' + msg, 'error');
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = 'Enviar pedido';
+    }
+  });
+
+  function showEstado(text, tipo) {
+    estado.style.display = 'block';
+    estado.textContent = text;
+    estado.style.background = tipo === 'success' ? 'rgba(20,120,20,0.12)' : 'rgba(120,20,20,0.08)';
+    estado.style.border = tipo === 'success' ? '1px solid rgba(20,120,20,0.2)' : '1px solid rgba(120,20,20,0.2)';
+  }
+
+document.getElementById("btn").onclick = function() {
+    document.getElementById("menu").classList.toggle("mostrar");
+}
+
+function toggleProductos(){
+    document.getElementById("submenu-productos").classList.toggle("mostrar");
+}
+
+
+
+
+
+function cambiarCantidadCompra(nombre, cambio) {
+
+  if (!carritoLista[nombre]) return;
+
+  carritoLista[nombre].cantidad += cambio;
+
+  if (carritoLista[nombre].cantidad <= 0) {
+    delete carritoLista[nombre];
+  }
+
+  localStorage.setItem('carrito_lista', JSON.stringify(carritoLista));
+
+  location.reload();
+}
+
+
+
+
+</script>
+</body>
+</html>

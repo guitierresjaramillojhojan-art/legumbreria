@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro / Iniciar sesión — Legumbre La Marcela</title>
+  <link rel="stylesheet" href="estilo2.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "https://axuhliyyagummxkehdup.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4dWhsaXl5YWd1bW14a2VoZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDI2MjIsImV4cCI6MjA3ODUxODYyMn0.Ae86N7rDL9MTCD0z6fECa_H6nof5HrTORiY0wHsz_Hk";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  </script>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="brand">
+      <div class="logo">LG</div>
+      <h1>Bienvenido</h1>
+      <p class="lead">Únete o entra a tu cuenta para acceder a Legumbre La Marcela.</p>
+
+      <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+        <div class="muted">¿Necesitas ayuda?</div>
+        <a href="https://wa.me/573001234567" target="_blank" class="btn secondary">Contactar</a>
+      </div>
+
+      <div style="margin-top:auto; font-size:13px; opacity:0.9">Esperamos que tengas un excelente servicio</div>
+    </div>
+
+    <div class="form-area">
+
+      <div class="switcher">
+        <div style="display:flex; flex-direction:column">
+          <div style="font-weight:700">Cuenta</div>
+          <div class="muted">Selecciona una opción</div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn" id="toggleBtn">Iniciar sesión ▾</button>
+          <div class="menu" id="menu">
+            <button data-action="login">Iniciar sesión</button>
+            <button data-action="register">Registrarse</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <form id="loginForm" class="form active" onsubmit="handleLogin(event)">
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input id="login-email" type="email" required placeholder="tucorreo@ejemplo.com">
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+          <input id="login-pass" type="password" required placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn">Entrar</button>
+        <div id="login-error" class="errors"></div>
+      </form>
+
+      <form id="registerForm" class="form" onsubmit="handleRegister(event)">
+        <div class="field">
+          <label>Nombre completo</label>
+          <input id="reg-name" type="text" required placeholder="Tu nombre completo">
+        </div>
+
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input id="reg-email" type="email" required placeholder="tucorreo@ejemplo.com">
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+          <input id="reg-pass" type="password" minlength="6" required placeholder="mínimo 6 caracteres">
+        </div>
+
+        <button type="submit" class="btn">Registrarme</button>
+        <div id="reg-error" class="errors"></div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <script>
+
+    const toggleBtn = document.getElementById('toggleBtn');
+    const menu = document.getElementById('menu');
+
+    toggleBtn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.dropdown')) menu.style.display = 'none';
+    });
+
+    menu.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        switchTo(btn.dataset.action);
+        menu.style.display = "none";
+      });
+    });
+
+    function switchTo(mode) {
+      document.getElementById('loginForm').classList.toggle("active", mode === "login");
+      document.getElementById('registerForm').classList.toggle("active", mode === "register");
+      toggleBtn.textContent = (mode === "login" ? "Iniciar sesión ▾" : "Registrarse ▾");
+    }
+
+
+    async function handleRegister(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("reg-name").value.trim();
+      const correo = document.getElementById("reg-email").value.trim();
+      const pass = document.getElementById("reg-pass").value;
+      const err = document.getElementById("reg-error");
+      err.textContent = "";
+
+      const { error } = await supabase
+        .from("usuarios")
+        .insert([{ nombre, correo, contrasena: pass }]);
+
+      if (error) {
+        err.textContent = "Error: " + error.message;
+        return;
+      }
+
+      alert("Registro exitoso 🎉");
+      window.location.href = "INDEX.HTML";
+    }
+
+
+    async function handleLogin(e) {
+      e.preventDefault();
+
+      const correo = document.getElementById("login-email").value.trim();
+      const pass = document.getElementById("login-pass").value;
+      const err = document.getElementById("login-error");
+      err.textContent = "";
+
+      const { data, error } = await supabase
+        .from("usuarios")
+        .select("*")
+        .eq("correo", correo)
+        .eq("contrasena", pass)
+        .single();
+
+      if (error || !data) {
+        err.textContent = "Correo o contraseña incorrectos.";
+        return;
+      }
+
+      alert("Inicio de sesión exitoso 🎉 Bienvenido " + data.nombre);
+
+      localStorage.setItem("usuario", JSON.stringify(data));
+
+      window.location.href = "INDEX.HTML";
+    }
+  </script>
+
+<script>
+  type="module"
+
+  import { registrarUsuario, iniciarSesion } from "./supabase-auth.js";
+
+
+  window.handleRegister = async function (e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById('reg-name').value.trim();
+    const correo = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value.trim();
+    const err = document.getElementById('reg-error');
+
+    err.textContent = "";
+
+    if (!nombre || !correo || !pass) {
+      err.textContent = "Por favor completa todos los campos.";
+      return;
+    }
+
+    const res = await registrarUsuario(nombre, correo, pass);
+
+    if (res.error) {
+      err.textContent = res.error.message;
+      return;
+    }
+
+    alert("Registro exitoso ✔️");
+    window.location.href = "INDEX.HTML";
+  };
+
+
+
+  window.handleLogin = async function (e) {
+    e.preventDefault();
+
+    const correo = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-pass').value.trim();
+    const err = document.getElementById('login-error');
+
+    err.textContent = "";
+
+    if (!correo || !pass) {
+      err.textContent = "Ingresa tu correo y contraseña.";
+      return;
+    }
+
+    const res = await iniciarSesion(correo, pass);
+
+    if (res.error) {
+      err.textContent = res.error;
+      return;
+    }
+
+    alert("Bienvenido " + res.data.nombre + " ✔️");
+    window.location.href = "INDEX.HTML";
+  };
+  </script>
+
+
+
+  </script>
+</body>
+</html>
